@@ -3,7 +3,11 @@ project(MatrixProject CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+endif()
 
 # Добавляем include директорию
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -20,15 +24,9 @@ add_library(matrix_lib ${MATRIX_SOURCES})
 add_executable(matrix_demo src/main.cpp)
 target_link_libraries(matrix_demo matrix_lib)
 
-# Тесты (Catch2)
-find_package(Catch2 3 QUIET)
+# Тесты (без Catch2)
+add_executable(test_matrix tests/test_matrix.cpp)
+target_link_libraries(test_matrix matrix_lib)
 
-if(Catch2_FOUND)
-    add_executable(test_matrix tests/test_matrix.cpp)
-    target_link_libraries(test_matrix matrix_lib Catch2::Catch2WithMain)
-    
-    enable_testing()
-    add_test(NAME MatrixTests COMMAND test_matrix)
-else()
-    message(STATUS "Catch2 не найден. Используй: vcpkg install catch2:x64-windows или установи вручную")
-endif()
+enable_testing()
+add_test(NAME MatrixTests COMMAND test_matrix)

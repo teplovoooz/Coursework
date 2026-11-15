@@ -1,9 +1,13 @@
 #include <iostream>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include "matrix.h"
 
 int main() {
+#ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
+#endif
     std::cout << "=== Пример использования Matrix ===\n\n";
 
     // Пример 1: Базовые операции

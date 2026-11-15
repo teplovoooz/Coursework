@@ -1,6 +1,9 @@
 build/
 *.o
+*.obj
 *.a
 *.so
 *.exe
+*.pdb
 .DS_Store
+.vscode/
